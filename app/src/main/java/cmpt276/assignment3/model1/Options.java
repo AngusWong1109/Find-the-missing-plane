@@ -5,8 +5,11 @@ public class Options {
     private int gameHeight;
     private int totalMines;
     private static Options instance;
+
     private Options(){
-        //Private to prevent anyone else from instantiating
+        this.gameHeight = 4;
+        this.gameWidth = 6;
+        this.totalMines = 6;
     }
     public static Options getInstance(){
         if(instance == null){
