@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="board_size">
+        <item>@string/_4Times6</item>
+        <item>@string/_5Times10</item>
+        <item>@string/_6Times15</item>
+    </string-array>
+
+</resources>
