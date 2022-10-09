@@ -4,6 +4,14 @@
     <string name="new_game">New Game</string>
     <string name="options">Options</string>
     <string name="help">Help</string>
+    <string name="setting">Setting</string>
+    <string name="_4Times6">4 rows by 6 columns</string>
+    <string name="_5Times10">5 rows by 10 columns</string>
+    <string name="_6Times15">6 rows by 15 columns</string>
+    <string name="board_size">Board Size:</string>
+    <string name="number_of_mines"># Mines:</string>
+    <string name="erase">Erase times played</string>
+    <string name="save">Save</string>
     <string name="author">Author</string>
     <string name="author_message">Hi there, I am Angus, the author of this game. I am a year 3 computer science student from SFU, and currently studying <a href="https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/home">CMPT276</a>. Hope you will enjoy this game</string>
     <string name="how_to_play">How to play?</string>
