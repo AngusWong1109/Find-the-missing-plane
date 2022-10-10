@@ -1,14 +1,18 @@
 package cmpt276.assignment3.model1;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 //This class is to store every information about each single game
 public class Game {
     private int numOfScans;
     public static List<Mine> mineList;
-
+    public static int[] minePosition;
     public Game() {
         numOfScans = 0;
+        minePosition = new int[Options.getInstance().getTotalMines()];
+        randomMine();
     }
 
     public int getNumOfScans() {
@@ -44,5 +48,32 @@ public class Game {
             }
         }
         return count;
+    }
+
+    private void randomMine(){
+        int boardSize = Options.getInstance().getGameHeight() * Options.getInstance().getGameWidth();
+        int totalMine = Options.getInstance().getTotalMines();
+        int count = 0;
+        boolean flag = false;
+        Random random = new Random();
+        do {
+            for (int i = 0; i < totalMine; i++) {
+                int pos = random.nextInt(totalMine);
+                do {
+                    for (int j = 0; j < count; j++) {
+                        if (minePosition[j] == pos) {
+                            pos = random.nextInt(totalMine);
+                            flag = true;
+                            break;
+                        } else {
+                            flag = false;
+                        }
+                    }
+                } while (flag);
+                minePosition[count] = pos;
+                count++;
+            }
+        }while(count < totalMine);
+        Arrays.sort(minePosition);
     }
 }
