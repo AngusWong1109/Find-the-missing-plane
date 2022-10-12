@@ -1,19 +1,19 @@
 package cmpt276.assignment3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-
-import java.util.Arrays;
-import java.util.Random;
+import android.widget.TextView;
 
 import cmpt276.assignment3.model1.Game;
 import cmpt276.assignment3.model1.GameManager;
@@ -27,11 +27,22 @@ public class GameScreen extends AppCompatActivity {
     int numRow = options.getGameHeight();
     int numCol = options.getGameWidth();
     Button buttons[][] = new Button[numRow][numCol];
+    int totalSize = numRow * numCol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_screen);
+        updateUI();
         populateButtons();
+    }
+
+    private void updateUI() {
+        TextView minesFound = findViewById(R.id.tvMinesFound);
+        TextView numScans = findViewById(R.id.tvScanUsed);
+        String mines = "Found " + game.getNumOfMinesFound() + " of " + options.getTotalMines() + " mines";
+        minesFound.setText(mines);
+        String scans = "# Scans used: " + game.getNumOfScans();
+        numScans.setText(scans);
     }
 
     private void populateButtons() {
@@ -43,11 +54,11 @@ public class GameScreen extends AppCompatActivity {
             table.addView(tableRow);
             for(int col = 0; col < numCol; col++){
                 Mine mine = new Mine(row, col);
-                if((row * numCol + col) == game.minePosition[count]){
+                if(row * numCol + col == game.minePosition[count] && count <= options.getTotalMines()){
                     mine.setMine(true);
                     count++;
                 }
-                game.mineList.add(mine);
+                Game.mineList.add(mine);
                 final int FINAL_ROW = row;
                 final int FINAL_COL = col;
                 Button button = new Button(this);
@@ -63,9 +74,15 @@ public class GameScreen extends AppCompatActivity {
                 buttons[row][col] = button;
             }
         }
+        for(int i = 0; i < totalSize; i++){
+            Mine m = Game.mineList.get(i);
+            m.setHintNum(Game.mineScanner(m));
+        }
     }
 
     private void buttonClicked(int row, int col) {
+        int pos = row * numCol + col;
+        Mine mine = Game.mineList.get(pos);
         Button button = buttons[row][col];
         lockButtonSizes();
         int newWidth = button.getWidth();
@@ -73,7 +90,20 @@ public class GameScreen extends AppCompatActivity {
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.airplane);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
         Resources resources = getResources();
-        button.setBackground(new BitmapDrawable(resources, scaledBitmap));
+        if(mine.isMine() && mine.getClicked() == 0) {
+            button.setBackground(new BitmapDrawable(resources, scaledBitmap));
+            mine.setClicked(mine.getClicked()+1);
+            game.setNumOfMinesFound(game.getNumOfMinesFound()+1);
+            updateUI();
+            if(game.getNumOfMinesFound() == options.getTotalMines()){
+                showAlertDialog();
+            }
+        }
+        else{
+            button.setText(String.valueOf(mine.getHintNum()));
+            game.setNumOfScans(game.getNumOfScans()+1);
+            updateUI();
+        }
     }
 
     private void lockButtonSizes() {
@@ -90,4 +120,10 @@ public class GameScreen extends AppCompatActivity {
         }
     }
 
+    private void showAlertDialog() {
+        gameManager.gameList.add(game);
+        FragmentManager manager = getSupportFragmentManager();
+        MessageFragment dialog = new MessageFragment();
+        dialog.show(manager, "MessageDialog");
+    }
 }

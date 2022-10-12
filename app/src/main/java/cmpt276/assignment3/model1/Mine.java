@@ -12,7 +12,7 @@ public class Mine {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
         this.clicked = 0;
-        this.hintNum = Game.mineScanner(this);
+        this.hintNum = 0;
     }
 
     public int getCoordinateX() {

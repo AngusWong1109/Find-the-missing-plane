@@ -2,6 +2,7 @@ package cmpt276.assignment3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -58,7 +59,7 @@ public class OptionScreen extends AppCompatActivity {
         for (int i = 0; i < mines.length; i++) {
             RadioButton button = new RadioButton(this);
             int numMines = mines[i];
-            button.setText(numMines + "mines");
+            button.setText(numMines + " mines");
             radioGroup2.addView(button);
         }
     }
@@ -87,8 +88,11 @@ public class OptionScreen extends AppCompatActivity {
                     options.setGameHeight(15);
                 }
                 RadioButton numMines = findViewById(idOfSelected2);
-                int mines = Integer.parseInt(numMines.getText().toString());
+                String message = numMines.getText().toString();
+                int mines = Integer.parseInt(message.replaceAll("[\\D]", ""));
                 options.setTotalMines(mines);
+                Intent intent = new Intent (OptionScreen.this, MenuScreen.class);
+                startActivity(intent);
             }
         });
     }
