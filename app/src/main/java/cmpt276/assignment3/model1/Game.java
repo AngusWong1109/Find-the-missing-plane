@@ -36,32 +36,6 @@ public class Game {
         this.numOfMinesFound = numOfMinesFound;
     }
 
-    public static int mineScanner(Mine mine) {
-        int x = mine.getCoordinateX(), y = mine.getCoordinateY();
-        int row = Options.getInstance().getGameHeight();
-        int col = Options.getInstance().getGameWidth();
-        int count = 0;
-        if(mineList == null){
-            return count;
-        }
-        for(int i=0; i<row; i++){
-            if(i == y){
-                continue;
-            }
-            if(mineList.get(col*i+y).isMine()){
-                count++;
-            }
-        }
-        for(int i=0; i<col; i++){
-            if(i == x){
-                continue;
-            }
-            if(mineList.get(y*col+i).isMine()){
-                count++;
-            }
-        }
-        return count;
-    }
 
     private void randomMine(){
         int totalMine = Options.getInstance().getTotalMines();
@@ -85,5 +59,27 @@ public class Game {
             count++;
         }while(count < totalMine);
         Arrays.sort(minePosition);
+    }
+
+    public static int mineScanner(Mine mine) {
+        int x = mine.getCoordinateX();
+        int y = mine.getCoordinateY();
+        int count = 0;
+        int height = Options.getInstance().getGameHeight();
+        int width = Options.getInstance().getGameWidth();
+        int totalSize = height * width;
+        for(int i = 0; i < totalSize; i++){
+            Mine temp = mineList.get(i);
+            if(temp.getCoordinateX() == x && temp.getCoordinateY() == y){
+                continue;
+            }
+            if(temp.getCoordinateX() == x && temp.isMine()){
+                count ++;
+            }
+            if(temp.getCoordinateY() == y && temp.isMine()){
+                count ++;
+            }
+        }
+        return count;
     }
 }

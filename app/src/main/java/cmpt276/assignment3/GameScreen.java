@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -40,8 +39,10 @@ public class GameScreen extends AppCompatActivity {
         TextView minesFound = findViewById(R.id.tvMinesFound);
         TextView numScans = findViewById(R.id.tvScanUsed);
         String mines = "Found " + game.getNumOfMinesFound() + " of " + options.getTotalMines() + " mines";
-        minesFound.setText(mines);
         String scans = "# Scans used: " + game.getNumOfScans();
+        int numRow = options.getGameHeight();
+        int numCol = options.getGameWidth();
+        minesFound.setText(mines);
         numScans.setText(scans);
     }
 
@@ -54,10 +55,6 @@ public class GameScreen extends AppCompatActivity {
             table.addView(tableRow);
             for(int col = 0; col < numCol; col++){
                 Mine mine = new Mine(row, col);
-                if(row * numCol + col == game.minePosition[count] && count <= options.getTotalMines()){
-                    mine.setMine(true);
-                    count++;
-                }
                 Game.mineList.add(mine);
                 final int FINAL_ROW = row;
                 final int FINAL_COL = col;
@@ -75,8 +72,15 @@ public class GameScreen extends AppCompatActivity {
             }
         }
         for(int i = 0; i < totalSize; i++){
-            Mine m = Game.mineList.get(i);
-            m.setHintNum(Game.mineScanner(m));
+            if(count < options.getTotalMines()){
+                if(i == game.minePosition[count]){
+                    Game.mineList.get(i).setMine(true);
+                    count++;
+                }
+            }
+        }
+        for(int i = 0; i < totalSize; i++){
+            Game.mineList.get(i).setHintNum(Game.mineScanner(Game.mineList.get(i)));
         }
     }
 
@@ -84,27 +88,48 @@ public class GameScreen extends AppCompatActivity {
         int pos = row * numCol + col;
         Mine mine = Game.mineList.get(pos);
         Button button = buttons[row][col];
-        lockButtonSizes();
         int newWidth = button.getWidth();
         int newHeight = button.getHeight();
+        int numClicked = mine.getClicked();
+        lockButtonSizes();
         Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.airplane);
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap, newWidth, newHeight, true);
         Resources resources = getResources();
-        if(mine.isMine() && mine.getClicked() == 0) {
+        if(mine.isMine() && numClicked == 0){
             button.setBackground(new BitmapDrawable(resources, scaledBitmap));
-            mine.setClicked(mine.getClicked()+1);
             game.setNumOfMinesFound(game.getNumOfMinesFound()+1);
-            updateUI();
-            if(game.getNumOfMinesFound() == options.getTotalMines()){
-                showAlertDialog();
-            }
+            updateHintNum(mine);
         }
         else{
             button.setText(String.valueOf(mine.getHintNum()));
             game.setNumOfScans(game.getNumOfScans()+1);
-            updateUI();
+        }
+        mine.setClicked(numClicked + 1);
+        updateUI();
+        if(game.getNumOfMinesFound() == options.getTotalMines()){
+            showAlertDialog();
         }
     }
+
+    private void updateHintNum(Mine mine) {
+        int totalSize = numRow * numCol;
+        mine.setMine(false);
+        for(int i = 0; i < totalSize; i++){
+            Mine m = Game.mineList.get(i);
+            m.setHintNum(Game.mineScanner(m));
+        }
+        for(int row = 0; row < numRow; row++){
+            for(int col = 0; col < numCol; col++){
+                int pos = row *numCol + col;
+                Mine m = Game.mineList.get(pos);
+                Button btn = buttons[row][col];
+                if(m.getClicked()>0 && !m.isMine()) {
+                    btn.setText(String.valueOf(m.getHintNum()));
+                }
+            }
+        }
+    }
+
 
     private void lockButtonSizes() {
         for(int row = 0; row < numRow; row++){
@@ -122,6 +147,10 @@ public class GameScreen extends AppCompatActivity {
 
     private void showAlertDialog() {
         gameManager.gameList.add(game);
+        for(int i = 0; i < game.minePosition.length; i++){
+            Mine m = Game.mineList.get(game.minePosition[i]);
+            m.setMine(true);
+        }
         FragmentManager manager = getSupportFragmentManager();
         MessageFragment dialog = new MessageFragment();
         dialog.show(manager, "MessageDialog");
