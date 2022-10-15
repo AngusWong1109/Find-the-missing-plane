@@ -16,7 +16,8 @@
     <string name="erase">Erase times played</string>
     <string name="save">Save</string>
     <string name="author">Author</string>
-    <string name="author_message">Hi there, I am Angus, the author of this game. I am a year 3 computer science student from SFU, and currently studying <a href="https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/home">CMPT276</a>. Hope you will enjoy this game</string>
+    <string name="author_message">Hi there, I am Angus, the author of this game. I am a year 3 computer science student from SFU,
+        and currently studying <a href="https://opencoursehub.cs.sfu.ca/bfraser/grav-cms/cmpt276/home">CMPT276</a>. Hope you will enjoy this game</string>
     <string name="how_to_play">How to play?</string>
     <string name="reference">Reference</string>
     <string name="congratsText">Congratulation! You have won the game!</string>
@@ -25,6 +26,13 @@
         airplane, there will display a hint number that tell you how many airplane are there in the same row and same column in the
         field that the user have clicked.\n\nBesides, after the airplane has displayed, you can clicked once again to display the
         hint number.\n\nHowever, this game is to aim for using the fewest scan to finish the game. Good Luck!</string>
+    <string name="citation">
+        Airplane button and main screen airplane: https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Aereo_svg.png/640px-Aereo_svg.png\n\n
+        Congratulation dialog: https://www.kindpng.com/imgv/ibooiJb_transparent-confetti-clip-art-emoji-celebrate-hd-png/\n\n
+        Sky Photo used in Game and Option Screen: https://stock.adobe.com/search?k=cartoon%20sky\n\n
+        Sky Photo used in welcome screen: https://www.istockphoto.com/vector/clouds-over-blue-sky-cartoon-background-vector-illustration-gm1086911620-291613190\n\n
+        Background photo used in Help Screen: https://www.123rf.com/photo_134956513_multiple-question-marks-in-speech-bubbles-forming-side-border-o-a-bright-yellow-background-with-copy.html?vti=lpv43pe72yoo59rvaa-1-1\n\n
+        Background photo used in Menu Screen: https://www.freepik.com/free-photos-vectors/cartoon-airport\n</string>
     <string name="mines">Found %1$d of %2$d mines.</string>
     <string name="scans"># Scans used: %1$d</string>
     <string name="gameConfig">Number of game in each configuration</string>
@@ -34,4 +42,5 @@
     <string name="no">No</string>
     <string name="author_name">by Angus Wong</string>
     <string name="next_arrow"><![CDATA[Next ->]]></string>
+
 </resources>

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/question"
     tools:context=".HelpScreen">
 
     <TextView
@@ -22,14 +23,12 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="413dp"
+        android:layout_height="343dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHelp">
 
@@ -43,37 +42,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/author"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#1B5E20" />
 
             <TextView
                 android:id="@+id/tvAboutAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/author_message" />
+                android:text="@string/author_message"
+                android:textColor="#1B5E20" />
 
             <TextView
                 android:id="@+id/tvHowToPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/how_to_play"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#5D4037" />
 
             <TextView
                 android:id="@+id/tvGameDescribe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="363dp"
+                android:layout_height="124dp"
+                android:text="@string/game_description"
+                android:textColor="#5D4037" />
 
             <TextView
                 android:id="@+id/tvReference"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/reference"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#5D4037" />
 
             <TextView
                 android:id="@+id/tvCitation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/citation" />
 
         </LinearLayout>
     </ScrollView>

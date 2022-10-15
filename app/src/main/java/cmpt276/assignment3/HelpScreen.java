@@ -22,9 +22,10 @@ public class HelpScreen extends AppCompatActivity {
         setContentView(R.layout.activity_help_screen);
         TextView author = findViewById(R.id.tvAboutAuthor);
         author.setMovementMethod(LinkMovementMethod.getInstance());
-        author.setLinkTextColor(Color.BLUE);
-        TextView game = findViewById(R.id.tvGameDescribe);
-        String describe = getString(R.string.game_description);
-        game.setText(describe);
+        author.setLinkTextColor(Color.BLACK);
+        TextView reference = findViewById(R.id.tvCitation);
+        reference.setMovementMethod(LinkMovementMethod.getInstance());
+        reference.setLinkTextColor(Color.BLACK);
+        reference.setText(getString(R.string.citation));
     }
 }
