@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="game_config">
+        <item> </item>
+        <item>4 rows by 6 columns with 6 mines</item>
+        <item>4 rows by 6 columns with 10 mines</item>
+        <item>4 rows by 6 columns with 15 mines</item>
+        <item>4 rows by 6 columns with 20 mines</item>
+        <item>5 rows by 10 columns with 6 mines</item>
+        <item>5 rows by 10 columns with 10 mines</item>
+        <item>5 rows by 10 columns with 15 mines</item>
+        <item>5 rows by 10 columns with 20 mines</item>
+        <item>6 rows by 15 columns with 6 mines</item>
+        <item>6 rows by 15 columns with 10 mines</item>
+        <item>6 rows by 15 columns with 15 mines</item>
+        <item>6 rows by 15 columns with 20 mines</item>
+    </string-array>
+</resources>

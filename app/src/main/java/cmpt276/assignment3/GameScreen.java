@@ -3,6 +3,7 @@ package cmpt276.assignment3;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,6 +28,14 @@ public class GameScreen extends AppCompatActivity {
     int numCol = options.getGameWidth();
     Button buttons[][] = new Button[numRow][numCol];
     int totalSize = numRow * numCol;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(GameScreen.this, MainActivity.class);
+        startActivity(i);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,12 +47,8 @@ public class GameScreen extends AppCompatActivity {
     private void updateUI() {
         TextView minesFound = findViewById(R.id.tvMinesFound);
         TextView numScans = findViewById(R.id.tvScanUsed);
-        String mines = "Found " + game.getNumOfMinesFound() + " of " + options.getTotalMines() + " mines";
-        String scans = "# Scans used: " + game.getNumOfScans();
-        int numRow = options.getGameHeight();
-        int numCol = options.getGameWidth();
-        minesFound.setText(mines);
-        numScans.setText(scans);
+        minesFound.setText(getString(R.string.mines, game.getNumOfMinesFound(), options.getTotalMines()));
+        numScans.setText(getString(R.string.scans, game.getNumOfScans()));
     }
 
     private void populateButtons() {
@@ -113,6 +118,7 @@ public class GameScreen extends AppCompatActivity {
 
     private void updateHintNum(Mine mine) {
         int totalSize = numRow * numCol;
+        boolean isMine = false;
         mine.setMine(false);
         for(int i = 0; i < totalSize; i++){
             Mine m = Game.mineList.get(i);
@@ -121,9 +127,16 @@ public class GameScreen extends AppCompatActivity {
         for(int row = 0; row < numRow; row++){
             for(int col = 0; col < numCol; col++){
                 int pos = row *numCol + col;
+                for(int i = 0; i < game.minePosition.length; i++){
+                    isMine = false;
+                    if(pos == game.minePosition[i]){
+                        isMine = true;
+                        break;
+                    }
+                }
                 Mine m = Game.mineList.get(pos);
                 Button btn = buttons[row][col];
-                if(m.getClicked()>0 && !m.isMine()) {
+                if((m.getClicked() > 0 && !isMine) || (m.getClicked() >= 2 && isMine)) {
                     btn.setText(String.valueOf(m.getHintNum()));
                 }
             }
@@ -146,7 +159,7 @@ public class GameScreen extends AppCompatActivity {
     }
 
     private void showAlertDialog() {
-        gameManager.gameList.add(game);
+        game.saveGame();
         for(int i = 0; i < game.minePosition.length; i++){
             Mine m = Game.mineList.get(game.minePosition[i]);
             m.setMine(true);

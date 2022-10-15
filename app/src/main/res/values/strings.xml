@@ -5,11 +5,14 @@
     <string name="options">Options</string>
     <string name="help">Help</string>
     <string name="setting">Setting</string>
+    <string name="display_mine">%1$d mines</string>
     <string name="_4Times6">4 rows by 6 columns</string>
     <string name="_5Times10">5 rows by 10 columns</string>
     <string name="_6Times15">6 rows by 15 columns</string>
     <string name="board_size">Board Size:</string>
     <string name="number_of_mines"># Mines:</string>
+    <string name="number_of_games">Number of game played: %1$d</string>
+    <string name="used_scan">Number of Scan used: %1$d</string>
     <string name="erase">Erase times played</string>
     <string name="save">Save</string>
     <string name="author">Author</string>
@@ -17,4 +20,18 @@
     <string name="how_to_play">How to play?</string>
     <string name="reference">Reference</string>
     <string name="congratsText">Congratulation! You have won the game!</string>
+    <string name="game_description">This game is about the user has to find all the missing airplane behind those card./n/n
+        When the user clicked once, if there is an airplane under that field, the airplane will be displayed. However, if there has no
+        airplane, there will display a hint number that tell you how many airplane are there in the same row and same column in the
+        field that the user have clicked.\n\nBesides, after the airplane has displayed, you can clicked once again to display the
+        hint number.\n\nHowever, this game is to aim for using the fewest scan to finish the game. Good Luck!</string>
+    <string name="mines">Found %1$d of %2$d mines.</string>
+    <string name="scans"># Scans used: %1$d</string>
+    <string name="gameConfig">Number of game in each configuration</string>
+    <string name="confirm_user_options">Are you sure you want to delete the game record?</string>
+    <string name="delete">Delete?</string>
+    <string name="yes">YES</string>
+    <string name="no">No</string>
+    <string name="author_name">by Angus Wong</string>
+    <string name="next_arrow"><![CDATA[Next ->]]></string>
 </resources>

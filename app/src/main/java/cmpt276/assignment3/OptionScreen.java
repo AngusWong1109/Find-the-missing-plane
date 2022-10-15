@@ -1,30 +1,46 @@
 package cmpt276.assignment3;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import cmpt276.assignment3.model1.Game;
 import cmpt276.assignment3.model1.GameManager;
 import cmpt276.assignment3.model1.Options;
 
 public class OptionScreen extends AppCompatActivity {
     Options options = Options.getInstance();
     GameManager gameManager = GameManager.getInstance();
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(OptionScreen.this, MenuScreen.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option_screen);
         updateUI();
         createRadioButtons();
+        createDropDownList();
         setUpSaveButton();
         setUpDeleteButton();
     }
+
 
     @Override
     protected void onStart() {
@@ -34,14 +50,7 @@ public class OptionScreen extends AppCompatActivity {
 
     private void updateUI() {
         TextView noOfGame = findViewById(R.id.tvNoOfGame);
-        String message;
-        if(gameManager.gameList == null){
-            message = "Number of game played: 0";
-        }
-        else {
-            message = "Number of game played: " + gameManager.gameList.size();
-        }
-        noOfGame.setText(message);
+        noOfGame.setText(getString(R.string.number_of_games,gameManager.getNumOfGame()));
     }
 
 
@@ -50,7 +59,7 @@ public class OptionScreen extends AppCompatActivity {
         String[] boardSize = getResources().getStringArray(R.array.board_size);
         for (int i = 0; i < boardSize.length; i++) {
             RadioButton button = new RadioButton(this);
-            String size = boardSize[i].toString();
+            String size = boardSize[i];
             button.setText(size);
             radioGroup1.addView(button);
         }
@@ -59,9 +68,68 @@ public class OptionScreen extends AppCompatActivity {
         for (int i = 0; i < mines.length; i++) {
             RadioButton button = new RadioButton(this);
             int numMines = mines[i];
-            button.setText(numMines + " mines");
+            button.setText(getString(R.string.display_mine, numMines));
             radioGroup2.addView(button);
         }
+    }
+
+    private void createDropDownList() {
+        TextView numGame = findViewById(R.id.tvShowNumGame);
+        Spinner spin = findViewById(R.id.gameConfigDropDown);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.game_config, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin.setAdapter(adapter);
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch(position){
+                    case 1:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r4c6m6)));
+                        break;
+                    case 2:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r4c6m10)));
+                        break;
+                    case 3:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r4c6m15)));
+                        break;
+                    case 4:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r4c6m20)));
+                        break;
+                    case 5:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r5c10m6)));
+                        break;
+                    case 6:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r5c10m10)));
+                        break;
+                    case 7:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r5c10m15)));
+                        break;
+                    case 8:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r5c10m20)));
+                        break;
+                    case 9:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r6c15m6)));
+                        break;
+                    case 10:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r6c15m10)));
+                        break;
+                    case 11:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r6c15m15)));
+                        break;
+                    case 12:
+                        numGame.setText(getString(R.string.used_scan, gameManager.findBestGame(gameManager.r6c15m20)));
+                        break;
+                    default:
+                        numGame.setText("");
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void setUpSaveButton() {
@@ -102,8 +170,31 @@ public class OptionScreen extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gameManager.gameList.clear();
+                showAlert();
+                TextView display = findViewById(R.id.tvShowNumGame);
+                display.setText(getString(R.string.used_scan, 0));
             }
         });
+    }
+
+    private void showAlert() {
+        AlertDialog.Builder build = new AlertDialog.Builder(OptionScreen.this);
+        build.setMessage(R.string.confirm_user_options);
+        build.setTitle(R.string.delete);
+        build.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Game.deleteGame();
+                updateUI();
+            }
+        });
+        build.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = build.create();
+        alert.show();
     }
 }

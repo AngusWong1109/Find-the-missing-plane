@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 
 public class MenuScreen extends AppCompatActivity {
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finishAffinity();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +42,6 @@ public class MenuScreen extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
     }
 }
