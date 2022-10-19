@@ -9,16 +9,20 @@ import java.util.Random;
 public class Game {
     private int numOfScans;
     private int numOfMinesFound;
-    private final int numRow = Options.getInstance().getGameHeight();
-    private final int numCol = Options.getInstance().getGameWidth();
-    private final int numMines = Options.getInstance().getTotalMines();
+    static private int numRow;
+    static private int numCol;
+    static private int numMines;
     public static List<Mine> mineList = new ArrayList<>();
     public int[] minePosition;
-    int totalSize = numRow * numCol;
-    public Game() {
+    int totalSize;
+    public Game(Options options) {
         numOfScans = 0;
         numOfMinesFound = 0;
+        numMines = options.getTotalMines();
         minePosition = new int[numMines];
+        numRow = options.getGameHeight();
+        numCol = options.getGameWidth();
+        totalSize = numRow * numCol;
         randomMine();
     }
 
@@ -66,9 +70,7 @@ public class Game {
         int x = mine.getCoordinateX();
         int y = mine.getCoordinateY();
         int count = 0;
-        int height = Options.getInstance().getGameHeight();
-        int width = Options.getInstance().getGameWidth();
-        int totalSize = height * width;
+        int totalSize = numRow * numCol;
         for(int i = 0; i < totalSize; i++){
             Mine temp = mineList.get(i);
             if(temp.getCoordinateX() == x && temp.getCoordinateY() == y){

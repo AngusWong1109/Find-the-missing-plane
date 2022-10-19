@@ -6,4 +6,5 @@
         <item>@string/_6Times15</item>
     </string-array>
 
+    <string name="default_board_size">@string/_4Times6</string>
 </resources>

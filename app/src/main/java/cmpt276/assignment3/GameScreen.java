@@ -21,9 +21,9 @@ import cmpt276.assignment3.model1.Mine;
 import cmpt276.assignment3.model1.Options;
 
 public class GameScreen extends AppCompatActivity {
-    Options options = Options.getInstance();
+    Options options = Options.getInstance(this);
     GameManager gameManager = GameManager.getInstance();
-    Game game = new Game();
+    Game game = new Game(options);
     int numRow = options.getGameHeight();
     int numCol = options.getGameWidth();
     Button buttons[][] = new Button[numRow][numCol];
@@ -32,7 +32,7 @@ public class GameScreen extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(GameScreen.this, MainActivity.class);
+        Intent i = new Intent(GameScreen.this, MenuScreen.class);
         startActivity(i);
     }
 

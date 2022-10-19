@@ -1,5 +1,7 @@
 package cmpt276.assignment3.model1;
 
+import android.content.Context;
+
 public class Options {
     private int gameWidth;
     private int gameHeight;
@@ -11,7 +13,7 @@ public class Options {
         this.gameWidth = 6;
         this.totalMines = 6;
     }
-    public static Options getInstance(){
+    public static Options getInstance(Context context){
         if(instance == null){
             instance = new Options();
         }

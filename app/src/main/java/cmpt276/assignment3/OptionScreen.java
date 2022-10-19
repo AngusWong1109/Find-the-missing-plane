@@ -3,8 +3,10 @@ package cmpt276.assignment3;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,7 +22,11 @@ import cmpt276.assignment3.model1.GameManager;
 import cmpt276.assignment3.model1.Options;
 
 public class OptionScreen extends AppCompatActivity {
-    Options options = Options.getInstance();
+    private static final String BOARD_SIZE_PREF = "Size pref";
+    private static final String BOARD_SIZE = "Board Size";
+    private static final String NUMBER_OF_MINE_PREF = "Number pref";
+    private static final String NUMBER_OF_MINES = "Number of mines";
+    Options options = Options.getInstance(this);
     GameManager gameManager = GameManager.getInstance();
 
     @Override
@@ -36,9 +42,27 @@ public class OptionScreen extends AppCompatActivity {
         setContentView(R.layout.activity_option_screen);
         updateUI();
         createRadioButtons();
+        savePrefs();
         createDropDownList();
-        setUpSaveButton();
         setUpDeleteButton();
+    }
+
+    private void savePrefs() {
+        String savedBoardSizeValue = getBoardSize(this);
+        if(savedBoardSizeValue.equals(getString(R.string._4Times6))){
+            options.setGameHeight(4);
+            options.setGameWidth(6);
+        }
+        else if(savedBoardSizeValue.equals(getString(R.string._5Times10))){
+            options.setGameHeight(5);
+            options.setGameWidth(10);
+        }
+        else{
+            options.setGameHeight(6);
+            options.setGameWidth(15);
+        }
+        int savedNumMinesValue = getNumberOfMines(this);
+        options.setTotalMines(savedNumMinesValue);
     }
 
 
@@ -61,7 +85,16 @@ public class OptionScreen extends AppCompatActivity {
             RadioButton button = new RadioButton(this);
             String size = boardSize[i];
             button.setText(size);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveBoardSize(size);
+                }
+            });
             radioGroup1.addView(button);
+            if(size.equals(getBoardSize(this))){
+                button.setChecked(true);
+            }
         }
         RadioGroup radioGroup2 = findViewById(R.id.rGroupNumOfMines);
         int[] mines = getResources().getIntArray(R.array.num_mines);
@@ -69,8 +102,43 @@ public class OptionScreen extends AppCompatActivity {
             RadioButton button = new RadioButton(this);
             int numMines = mines[i];
             button.setText(getString(R.string.display_mine, numMines));
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveNumberOfMines(numMines);
+                }
+            });
             radioGroup2.addView(button);
+            if(numMines == getNumberOfMines(this)){
+                button.setChecked(true);
+            }
         }
+    }
+
+    private void saveBoardSize(String size) {
+        SharedPreferences prefs = this.getSharedPreferences(BOARD_SIZE_PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(BOARD_SIZE, size);
+        editor.apply();
+    }
+
+    static public String getBoardSize(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(BOARD_SIZE_PREF, MODE_PRIVATE);
+        String defaultValue = context.getResources().getString(R.string.default_board_size);
+        return prefs.getString(BOARD_SIZE, defaultValue);
+    }
+
+    private void saveNumberOfMines(int numMines) {
+        SharedPreferences prefs = this.getSharedPreferences(NUMBER_OF_MINE_PREF, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(NUMBER_OF_MINES, numMines);
+        editor.apply();
+    }
+
+    static public int getNumberOfMines(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(NUMBER_OF_MINE_PREF, MODE_PRIVATE);
+        int defaultValue = context.getResources().getInteger(R.integer.default_num_mines);
+        return prefs.getInt(NUMBER_OF_MINES, defaultValue);
     }
 
     private void createDropDownList() {
@@ -128,39 +196,6 @@ public class OptionScreen extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-    }
-
-    private void setUpSaveButton() {
-        Button save = findViewById(R.id.btnSave);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RadioGroup radioGroup1 = findViewById(R.id.rGroupBoardSize);
-                RadioGroup radioGroup2 = findViewById(R.id.rGroupNumOfMines);
-                int idOfSelected1 = radioGroup1.getCheckedRadioButtonId();
-                int idOfSelected2 = radioGroup2.getCheckedRadioButtonId();
-                RadioButton boardSize = findViewById(idOfSelected1);
-                String size = boardSize.getText().toString();
-                if(size.equals(getString(R.string._4Times6))){
-                    options.setGameHeight(4);
-                    options.setGameWidth(6);
-                }
-                else if(size.equals(getString(R.string._5Times10))){
-                    options.setGameHeight(5);
-                    options.setGameHeight(10);
-                }
-                else{
-                    options.setGameHeight(6);
-                    options.setGameHeight(15);
-                }
-                RadioButton numMines = findViewById(idOfSelected2);
-                String message = numMines.getText().toString();
-                int mines = Integer.parseInt(message.replaceAll("[\\D]", ""));
-                options.setTotalMines(mines);
-                Intent intent = new Intent (OptionScreen.this, MenuScreen.class);
-                startActivity(intent);
             }
         });
     }
